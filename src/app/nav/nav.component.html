@@ -1,0 +1,17 @@
+<ul class="nav nav-tabs " style="background-color:rgba(74, 14, 89, 0.861)">
+    <div class="col-5 nav-link  head">
+        Onilne Private Tutor Finder System
+    </div>
+    <li class="nav-item">
+        <a class="nav-link " [ngClass]="{active: adminPane}" (click)="activeAdmin()" routerLink="admin">Admin </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link " [ngClass]="{active: parentPane}" (click)="activeParent()" routerLink="parent">Parent </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link " [ngClass]="{active: tutorPane}" (click)="activeTutor()" routerLink="tutor">Tutor</a>
+    </li>
+
+</ul>

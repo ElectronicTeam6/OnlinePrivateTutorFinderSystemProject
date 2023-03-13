@@ -1,0 +1,482 @@
+<section class="container">
+
+  <section *ngIf="!loggedIn" class="vh-100 my-5 py-5">
+
+    <div class="container-fluid h-custom">
+      <h1 class="text-center mb-lg-5">Login Admin</h1>
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
+            alt="Sample image">
+        </div>
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form ngNativeValidate #form="ngForm">
+            <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+              <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+              <button type="button" class="btn btn-primary btn-floating mx-1">
+                <i class="fa fa-facebook-f"></i>
+              </button>
+
+              <button type="button" class="btn btn-primary btn-floating mx-1">
+                <i class="fa fa-twitter"></i>
+              </button>
+
+              <button type="button" class="btn btn-primary btn-floating mx-1">
+                <i class="fa fa-linkedin"></i>
+              </button>
+            </div>
+
+            <div class="divider d-flex align-items-center my-4">
+              <p class="text-center fw-bold mx-3 mb-0">Or</p>
+            </div>
+
+
+            <!-- Email input -->
+            <div class="form-outline mb-4">
+              <input required type="email" id="email" name="email" class="form-control form-control-lg"
+                placeholder="Enter a valid email address" [(ngModel)]="email" />
+              <label class="form-label" for="form3Example3">Email address</label>
+            </div>
+
+            <!-- Password input -->
+            <div class="form-outline mb-3">
+              <input type="password" id="pass" name="pass" class="form-control form-control-lg"
+                placeholder="Enter password" [(ngModel)]="password" />
+              <label class="form-label" for="form3Example4">Password</label>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+              <a href="#!" class="text-body">Forgot password?</a>
+            </div>
+
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <input type="submit" (click)="loginAdmin()" type="button" class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;" value="Login">
+              <!-- <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="register"
+                  class="link-danger">Register</a></p> -->
+            </div>
+
+            <!-- {{userService.activeUser.name}} -->
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div *ngIf="loggedIn">
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand text-success">Welcome {{userService.activeUser.firstName}}
+          {{userService.activeUser.lastName}}</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+            <li class="nav-item mx-2">
+              <a class="btn btn-outline-primary" [ngClass]="{active: manageParents}" (click)="togglemanageParents()"
+                aria-current="page">Manage Parents</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="btn btn-outline-primary" [ngClass]="{active: manageTutor}" (click)="toggleManageTutor()">Manage
+                Tutors</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="btn btn-outline-primary" [ngClass]="{active: manageEbooks}" (click)="toggleManageBooks()">Manage
+                Books</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="btn btn-outline-primary" [ngClass]="{active: addEbooks}" (click)="toggleAddBooks()">Add
+                Books</a>
+            </li>
+            <li class="nav-item mx-2">
+              <a class="btn btn-outline-primary" [ngClass]="{active: addTTutor}" (click)="toggleAddTutor()">Add
+                Tutor</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+    <ng-container *ngIf="manageParents">
+      <div class="card my-4 border-primary">
+        <div class="card-header border-primary">
+          <span class="text-center">
+            <h3 class="my-2">Manage Users</h3>
+          </span>
+        </div>
+        <div class="card-body border-success">
+
+          <table class="table border-success">
+            <thead>
+              <tr>
+                <!-- <th class="text-center text-capitalize">Id</th> -->
+                <th class="text-center text-capitalize ">email</th>
+                <th class="text-center text-capitalize ">firstName</th>
+                <th class="text-center text-capitalize ">lastName</th>
+                <th class="text-center text-capitalize ">Action</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of allParents">
+                <!-- <td class="text-capitalize text-center">{{user.id}}</td> -->
+                <td class="text-center">{{user.email}}</td>
+                <td class="text-capitalize text-center">{{user.firstName}}</td>
+                <td class="text-capitalize  text-center">{{user.lastName}}</td>
+
+                <td class="text-center text-capitalize ">
+                  <button type="button" class="btn btn-success mx-3" (click)="editMeParent(user)"> <span><i
+                        class="fa fa-pencil" style="margin-right: 5px;" aria-hidden="true"></i></span> Edit</button>
+                  <button type="button" class="btn btn-danger" (click)="deleteMeParent(user)"> <span><i
+                        class="fa fa-trash-o" style="margin-right: 5px;" aria-hidden="true"></i></span> Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="card-footer border-primary " *ngIf="toggleEditParent">
+          <span class="text-center">
+            <h3 class="my-2">Edit Parent Details</h3>
+          </span>
+          <form class="bg-light text-dark p-lg-4 form-inline" (ngSubmit)="updateParent()">
+            <!-- <div class="form-group">
+            <label cla for="firstName">User Id</label>
+            <input type="text" name="userId" id="userId" class="form-control" placeholder="" [value]="tutorToEdit.userId"
+              aria-describedby="helpId" readonly>
+          </div> -->
+
+            <div class="form-group">
+              <label cla for="firstName">First Name</label>
+              <input type="text" name="firstName" id="firstName" class="form-control" placeholder=""
+                [(ngModel)]="parentToEdit.firstName" aria-describedby="helpId">
+            </div>
+            <div class="form-group">
+              <label cla for="lastName">Last Name</label>
+              <input type="text" name="lastName" id="lastName" class="form-control" placeholder=""
+                [(ngModel)]="parentToEdit.lastName" aria-describedby="helpId">
+            </div>
+            <div class="form-group">
+              <label cla for="email"> Email</label>
+              <input type="email" name="email" id="email" class="form-control" placeholder=""
+                [(ngModel)]="parentToEdit.email" aria-describedby="helpId">
+            </div>
+
+
+            <div class="text-center my-4">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+
+          </form>
+
+
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="manageTutor">
+      <div class="card my-4 border-primary">
+        <div class="card-header border-primary">
+          <span class="text-center">
+            <h3 class="my-2">Manage Tutors</h3>
+          </span>
+        </div>
+        <div class="card-body border-success">
+
+          <table class="table border-success">
+            <thead>
+              <tr>
+                <!-- <th class="text-center text-capitalize">Id</th> -->
+                <th class="text-center text-capitalize ">email</th>
+                <th class="text-center text-capitalize ">firstName</th>
+                <th class="text-center text-capitalize ">lastName</th>
+                <th class="text-center text-capitalize ">is available</th>
+                <th class="text-center text-capitalize ">subject</th>
+
+                <th class="text-center text-capitalize ">rating</th>
+                <th class="text-center text-capitalize ">Action</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let user of allTutors">
+                <!-- <td class="text-capitalize text-center">{{user.id}}</td> -->
+                <td class="text-center">{{user.email}}</td>
+                <td class="text-capitalize text-center">{{user.firstName}}</td>
+                <td class="text-capitalize  text-center">{{user.lastName}}</td>
+                <td class="text-capitalize  text-center">{{user.available}}</td>
+                <td class="text-capitalize  text-center">{{user.subject}}</td>
+                <td class="text-capitalize  text-center">{{user.rating}}</td>
+
+                <td class="text-center text-capitalize ">
+                  <button type="button" class="btn btn-success mx-3" (click)="editMeTutor(user)"> <span><i
+                        class="fa fa-pencil" style="margin-right: 5px;" aria-hidden="true"></i></span> Edit</button>
+                  <button type="button" class="btn btn-danger" (click)="deleteMeTutor(user)"> <span><i
+                        class="fa fa-trash-o" style="margin-right: 5px;" aria-hidden="true"></i></span> Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="card-footer border-primary " *ngIf="toggleEditTutor">
+          <span class="text-center">
+            <h3 class="my-2">Edit Tutor Details</h3>
+          </span>
+          <form class="bg-light text-dark p-lg-4 form-inline" (ngSubmit)="updateTutor()">
+            <div class="form-group">
+              <label cla for="id">Id</label>
+              <input type="text" name="id" id="id" class="form-control" placeholder="" [value]="tutorToEdit.id"
+                aria-describedby="helpId" required readonly>
+            </div>
+
+            <div class="form-group">
+              <label cla for="firstName">First Name</label>
+              <input type="text" name="firstName" id="firstName" class="form-control" placeholder=""
+                [(ngModel)]="tutorToEdit.firstName" aria-describedby="helpId" required>
+            </div>
+            <div class="form-group">
+              <label cla for="lastName">Last Name</label>
+              <input type="text" name="lastName" id="lastName" class="form-control" placeholder=""
+                [(ngModel)]="tutorToEdit.lastName" aria-describedby="helpId" required>
+            </div>
+            <div class="form-group">
+              <label cla for="email"> Email</label>
+              <input type="email" name="email" id="email" class="form-control" placeholder=""
+                [(ngModel)]="tutorToEdit.email" aria-describedby="helpId" required>
+            </div>
+            <div class="form-group">
+              <label cla for="subject"> Subject</label>
+              <input type="text" name="subject" id="subject" class="form-control" placeholder=""
+                [(ngModel)]="tutorToEdit.subject" aria-describedby="helpId" required>
+            </div>
+            <div class="form-group">
+              <label cla for="rating"> Rating</label>
+              <input type="number" max="5" min="0" name="rating" id="rating" class="form-control" placeholder=""
+                [(ngModel)]="tutorToEdit.rating" aria-describedby="helpId" required>
+            </div>
+
+            <div class="form-group checkbox-lg my-3">
+              <label cla for="available"> Is Available</label>
+              <input type="checkbox" name="available" id="available" class="mx-3 checkbox-lg form-check-input"
+                placeholder="" [(ngModel)]="tutorToEdit.available">
+            </div>
+
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+
+          </form>
+
+
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="manageEbooks">
+      <div class="card my-4 border-primary">
+        <div class="card-header border-primary">
+          <span class="text-center">
+            <h3 class="my-2">Manage Books</h3>
+          </span>
+        </div>
+        <div class="card-body border-success">
+
+          <table class="table border-success">
+            <thead>
+              <tr>
+                <!-- <th class="text-center text-capitalize">Id</th> -->
+                <th class="text-center text-capitalize ">book id</th>
+                <th class="text-center text-capitalize ">author name</th>
+                <th class="text-center text-capitalize ">book name</th>
+                <th class="text-center text-capitalize ">price</th>
+                <th class="text-center text-capitalize ">Action</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let book of allBooks">
+                <td class="text-capitalize text-center">{{book.id}}</td>
+                <td class="text-center">{{book.authorName}}</td>
+                <td class="text-capitalize text-center">{{book.bookName}}</td>
+                <td class="text-capitalize  text-center">{{book.price}}</td>
+
+                <td class="text-center text-capitalize ">
+                  <button type="button" class="btn btn-success mx-3" (click)="editMeBook(book)"> <span><i
+                        class="fa fa-pencil" style="margin-right: 5px;" aria-hidden="true"></i></span> Edit</button>
+                  <button type="button" class="btn btn-danger" (click)="deleteMeBook(book)"> <span><i
+                        class="fa fa-trash-o" style="margin-right: 5px;" aria-hidden="true"></i></span> Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        <div class="card-footer border-primary " *ngIf="toggleEditBook">
+          <span class="text-center">
+            <h3 class="my-2">Edit Book Details</h3>
+          </span>
+          <form class="bg-light text-dark p-lg-4 form-inline" (ngSubmit)="updateBook()">
+            <div class="form-group">
+              <label cla for="Id"> Id</label>
+              <input type="text" name="Id" id="Id" class="form-control" placeholder="" [value]="bookToEdit.id"
+                aria-describedby="helpId" readonly>
+            </div>
+
+            <div class="form-group">
+              <label cla for="authorName">First Name</label>
+              <input type="text" name="authorName" id="authorName" class="form-control" placeholder=""
+                [(ngModel)]="bookToEdit.authorName" aria-describedby="helpId">
+            </div>
+            <div class="form-group">
+              <label cla for="bookName">Last Name</label>
+              <input type="text" name="bookName" id="bookName" class="form-control" placeholder=""
+                [(ngModel)]="bookToEdit.bookName" aria-describedby="helpId">
+            </div>
+            <div class="form-group">
+              <label cla for="price"> Price</label>
+              <input type="number" name="price" id="price" class="form-control" placeholder=""
+                [(ngModel)]="bookToEdit.price" aria-describedby="helpId">
+            </div>
+
+
+            <div class="text-center my-3">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+
+          </form>
+
+
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="addEbooks">
+      <div class="card my-4 border-primary">
+        <div class="card-header border-primary">
+          <span class="text-center">
+            <h3 class="my-2">Add Book</h3>
+          </span>
+        </div>
+
+        <div class="card-footer border-primary " *ngIf="toggleAddBooks">
+          <!-- <span class="text-center">
+          <h3 class="my-2">Edit Book Details</h3>
+        </span> -->
+          <form class="bg-light text-dark p-lg-4 form-inline" (ngSubmit)="addBook()">
+            <!-- <div class="form-group">
+            <label cla for="Id"> Id</label>
+            <input type="text" name="Id" id="Id" class="form-control" placeholder="" [value]="bookToEdit.id"
+              aria-describedby="helpId" readonly>
+          </div> -->
+
+            <div class="form-group">
+              <label cla for="authorName">Author Name</label>
+              <input type="text" name="authorName" id="authorName" class="form-control" placeholder=""
+                [(ngModel)]="bookToAdd.authorName" aria-describedby="helpId">
+            </div>
+            <div class="form-group">
+              <label cla for="bookName">Last Name</label>
+              <input type="text" name="bookName" id="bookName" class="form-control" placeholder=""
+                [(ngModel)]="bookToAdd.bookName" aria-describedby="helpId">
+            </div>
+            <div class="form-group">
+              <label cla for="price"> Price</label>
+              <input type="number" name="price" id="price" class="form-control" placeholder=""
+                [(ngModel)]="bookToAdd.price" aria-describedby="helpId">
+            </div>
+
+
+            <div class="text-center my-3">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+
+          </form>
+
+
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="addTTutor">
+      <div class="card my-4 border-primary">
+        <div class="card-header border-primary">
+          <span class="text-center">
+            <h3 class="my-2">Add Tutor</h3>
+          </span>
+        </div>
+
+        <div class="card-footer border-primary " *ngIf="toggleAddTutor">
+          <!-- <span class="text-center">
+          <h3 class="my-2">Edit Book Details</h3>
+        </span> -->
+          <form class="bg-light text-dark p-lg-4 form-inline" (ngSubmit)="addTutor()">
+            <!-- <div class="form-group">
+            <label cla for="Id"> Id</label>
+            <input type="text" name="Id" id="Id" class="form-control" placeholder="" [value]="bookToEdit.id"
+              aria-describedby="helpId" readonly>
+          </div> -->
+
+            <div class="form-group">
+              <label cla for="firstName">First Name</label>
+              <input type="text" name="firstName" id="firstName" class="form-control" placeholder=""
+                [(ngModel)]="tutorToAdd.firstName" aria-describedby="helpId" required>
+            </div>
+            <div class="form-group">
+              <label cla for="lastName">Last Name</label>
+              <input type="text" name="lastName" id="lastName" class="form-control" placeholder=""
+                [(ngModel)]="tutorToAdd.lastName" aria-describedby="helpId" required>
+            </div>
+            <div class="form-group">
+              <label cla for="email"> Email</label>
+              <input type="email" name="email" id="email" class="form-control" placeholder=""
+                [(ngModel)]="tutorToAdd.email" aria-describedby="helpId" required>
+            </div>
+            <div class="form-group">
+              <label cla for="password"> Set Password</label>
+              <input type="text" name="password" id="password" class="form-control" placeholder=""
+                [(ngModel)]="tutorToAdd.password" aria-describedby="helpId" required>
+            </div>
+            <div class="form-group">
+              <label cla for="subject"> Subject</label>
+              <input type="text" name="subject" id="subject" class="form-control" placeholder=""
+                [(ngModel)]="tutorToAdd.subject" aria-describedby="helpId" required>
+            </div>
+            <div class="form-group">
+              <label cla for="rating"> Rating</label>
+              <input type="number" max="5" min="0" name="rating" id="rating" class="form-control" placeholder=""
+                [(ngModel)]="tutorToAdd.rating" aria-describedby="helpId" required>
+            </div>
+
+            <div class="form-group checkbox-lg my-3">
+              <label cla for="available"> Is Available</label>
+              <input type="checkbox" name="available" id="available" class="mx-3 checkbox-lg form-check-input"
+                placeholder="" [(ngModel)]="tutorToAdd.available">
+            </div>
+
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+
+
+          </form>
+
+
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+</section>

@@ -1,0 +1,305 @@
+<section class="container">
+
+    <!-- <app-login *ngIf="!loggedIn"></app-login> -->
+
+    <section *ngIf="!loggedIn" class="vh-100 my-5 py-5">
+        <div class="container-fluid h-custom">
+            <h1 class="text-center mb-lg-5">Login Tutor </h1>
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+                        class="img-fluid" alt="Sample image">
+                </div>
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <form ngNativeValidate #form="ngForm">
+                        <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                            <p class="lead fw-normal mb-0 me-3">Sign in with</p>
+                            <button type="button" class="btn btn-primary btn-floating mx-1">
+                                <i class="fa fa-facebook-f"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-primary btn-floating mx-1">
+                                <i class="fa fa-twitter"></i>
+                            </button>
+
+                            <button type="button" class="btn btn-primary btn-floating mx-1">
+                                <i class="fa fa-linkedin"></i>
+                            </button>
+                        </div>
+
+                        <div class="divider d-flex align-items-center my-4">
+                            <p class="text-center fw-bold mx-3 mb-0">Or</p>
+                        </div>
+
+
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <input required type="email" id="email" name="email" class="form-control form-control-lg"
+                                placeholder="Enter a valid email address" [(ngModel)]="email" />
+                            <label class="form-label" for="form3Example3">Email address</label>
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="form-outline mb-3">
+                            <input type="password" id="pass" name="pass" class="form-control form-control-lg"
+                                placeholder="Enter password" [(ngModel)]="password" />
+                            <label class="form-label" for="form3Example4">Password</label>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="#!" class="text-body">Forgot password?</a>
+                        </div>
+
+                        <div class="text-center text-lg-start mt-4 pt-2">
+                            <input type="submit" (click)="loginUser()" type="button" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;" value="Login">
+                            <!-- <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="register"
+                                    class="link-danger">Register</a></p> -->
+                        </div>
+
+                        <!-- {{userService.activeUser.name}} -->
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div *ngIf="loggedIn">
+
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand text-success text-capitalize">Welcome {{userService.activeUser.firstName}}
+                    {{userService.activeUser.lastName}}</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                        <li class="nav-item mx-2">
+                            <a class="btn btn-outline-primary" [ngClass]="{active: viewDemoReq}"
+                                (click)="viewDemoRequests()">View Demo Requests</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="btn btn-outline-primary" [ngClass]="{active: viewBkngs}"
+                                (click)="viewBookings()">View
+                                Bookings</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="btn btn-outline-primary" [ngClass]="{active: updateProfile}"
+                                (click)="toggleUpdateProfile()">Update Profile</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="card border-success my-3" *ngIf="accepted">
+            <h5 class="border-success text-success m-3 text-center">Demo Requested Accepted.</h5>
+        </div>
+
+
+
+        <ng-container *ngIf="viewDemoReq">
+            <div class="card my-4 border-primary">
+                <div class="card-header border-primary">
+                    <span class="text-center">
+                        <h3 class="my-2">Demo Requests</h3>
+                    </span>
+                </div>
+                <div class="card-body border-success">
+
+                    <table class="table border-success">
+                        <thead>
+                            <tr>
+                                <th class="text-center text-capitalize ">Parent Id</th>
+                                <th class="text-center text-capitalize ">email</th>
+                                <th class="text-center text-capitalize ">firstName</th>
+                                <th class="text-center text-capitalize ">lastName</th>
+                                <th class="text-center text-capitalize ">Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of demoRequests">
+
+                                <!-- <td class="text-capitalize text-center">{{user.demoId}}</td> -->
+                                <td class="text-center">{{user.parent.id}}</td>
+                                <td class="text-center">{{user.parent.email}}</td>
+                                <td class="text-capitalize text-center">{{user.parent.firstName}}</td>
+                                <td class="text-capitalize  text-center">{{user.parent.lastName}}</td>
+
+                                <td class="text-center text-capitalize ">
+
+                                    <ng-container *ngIf="user.accepted">
+                                        <button type="button" disabled class="btn btn-primary mx-3">
+                                            <span><i class="fa fa-envelope-open " style="margin-right: 5px;"
+                                                    aria-hidden="true"></i></span> Accepted Already</button>
+                                    </ng-container>
+
+                                    <button *ngIf="!user.accepted" type="button" class="btn btn-success mx-3"
+                                        (click)="acceptDemoReq(user)">
+                                        <span><i class="fa fa-envelope-open " style="margin-right: 5px;"
+                                                aria-hidden="true"></i></span> Accept Request</button>
+
+
+                                    <button type="button" class="btn btn-danger" (click)="declineDemoRequest(user)">
+                                        <span><i class="fa fa-handshake-o" style="margin-right: 5px;"
+                                                aria-hidden="true"></i></span> Decline Demo Request</button>
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </ng-container>
+
+
+        <ng-container *ngIf="viewBkngs">
+            <div class="card my-4 border-primary">
+                <div class="card-header border-primary">
+                    <span class="text-center">
+                        <h3 class="my-2">Booking Requests</h3>
+                    </span>
+                </div>
+                <div class="card-body border-success">
+
+                    <table class="table border-success">
+                        <thead>
+                            <tr>
+                                <th class="text-center text-capitalize ">Parent Id</th>
+                                <th class="text-center text-capitalize ">email</th>
+                                <th class="text-center text-capitalize ">firstName</th>
+                                <th class="text-center text-capitalize ">lastName</th>
+                                <th class="text-center text-capitalize ">Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- <div *ngFor="let l of bookingRequest">
+                                Parent; {{l.parent.id}} ---
+                            </div> -->
+                            <tr *ngFor="let user of bookingRequest">
+
+                                <td class="text-center">{{user.parent.id}}</td>
+                                <td class="text-center">{{user.parent.email}}</td>
+                                <td class="text-capitalize text-center">{{user.parent.firstName}}</td>
+                                <td class="text-capitalize  text-center">{{user.parent.lastName}}</td>
+
+                                <td class="text-center text-capitalize ">
+
+                                    <ng-container *ngIf="user.accepted">
+                                        <button type="button" disabled class="btn btn-primary mx-3">
+                                            <span><i class="fa fa-envelope-open " style="margin-right: 5px;"
+                                                    aria-hidden="true"></i></span> Booking Accepted</button>
+                                    </ng-container>
+
+
+                                    <button *ngIf="!user.accepted" type="button" class="btn btn-success mx-3"
+                                        (click)="acceptBooking(user)">
+                                        <span><i class="fa fa-envelope-open " style="margin-right: 5px;"
+                                                aria-hidden="true"></i></span> Accept Booking Request</button>
+
+
+                                    <button type="button" class="btn btn-danger" (click)="declineBooking(user)">
+                                        <span><i class="fa fa-handshake-o" style="margin-right: 5px;"
+                                                aria-hidden="true"></i></span> Decline Booking Request</button>
+
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="updateProfile">
+            <div class="card my-4 border-primary">
+                <!-- <div class="card-header border-primary">
+                    <span class="text-center">
+                        <h3 class="my-2">Edit Profile</h3>
+                    </span>
+                </div> -->
+                <div class="card-body border-success">
+
+
+                </div>
+                <div class="card-footer border-primary ">
+                    <span class="text-center">
+                        <h3 class="my-2">Edit Profile</h3>
+                    </span>
+                    <form class="bg-light text-dark p-lg-4 form-inline" (ngSubmit)="updateTutor()">
+                        <div class="form-group">
+                            <label cla for="id">Id</label>
+                            <input type="text" name="id" id="id" class="form-control" placeholder=""
+                                [value]="userService.activeUser.id" aria-describedby="helpId" required readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label cla for="firstName">First Name</label>
+                            <input type="text" name="firstName" id="firstName" class="form-control" placeholder=""
+                                [(ngModel)]="userService.activeUser.firstName" aria-describedby="helpId" required>
+                        </div>
+                        <div class="form-group">
+                            <label cla for="lastName">Last Name</label>
+                            <input type="text" name="lastName" id="lastName" class="form-control" placeholder=""
+                                [(ngModel)]="userService.activeUser.lastName" aria-describedby="helpId" required>
+                        </div>
+                        <div class="form-group">
+                            <label cla for="email"> Email</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder=""
+                                [(ngModel)]="userService.activeUser.email" aria-describedby="helpId" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label cla for="password"> Password</label>
+                            <input type="password" name="password" id="password" class="form-control" placeholder=""
+                                [(ngModel)]="userService.activeUser.password" aria-describedby="helpId" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label cla for="subject"> Subject</label>
+                            <input type="text" name="subject" id="subject" class="form-control" placeholder=""
+                                [(ngModel)]="userService.activeUser.subject" aria-describedby="helpId" required>
+                        </div>
+                        <div class="form-group">
+                            <label cla for="rating"> Rating</label>
+                            <input type="number" max="5" min="0" name="rating" id="rating" class="form-control"
+                                placeholder="" [(ngModel)]="userService.activeUser.rating" aria-describedby="helpId"
+                                required>
+                        </div>
+
+                        <div class="form-group checkbox-lg my-3">
+                            <label cla for="available"> Is Available</label>
+                            <input type="checkbox" name="available" id="available"
+                                class="mx-3 checkbox-lg form-check-input" placeholder=""
+                                [(ngModel)]="userService.activeUser.available">
+                        </div>
+
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+
+
+                    </form>
+
+
+                </div>
+            </div>
+
+        </ng-container>
+    </div>
+
+
+</section>
